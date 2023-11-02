@@ -14,11 +14,18 @@ class Clientes extends StatefulWidget {
 
 class _ClientesState extends State<Clientes> {
   bool modoBusqueda = false;
+  bool modoEditar = false;
+  ScrollController scrollController = ScrollController();
   TextEditingController controllerBuscador = TextEditingController();
   TextEditingController controllerNombre = TextEditingController();
   TextEditingController controllerNacimiento = TextEditingController();
+  TextEditingController controllerEditNombre = TextEditingController();
+  TextEditingController controllerEditNacimiento = TextEditingController();
   DateTime nacimientoTemp = DateTime(0);
   List<Cliente> clientestemp = [];
+  FocusNode focusNombre = FocusNode();
+  FocusNode focusFecha = FocusNode();
+  Cliente clienteEdit = Cliente("",DateTime(0),DateTime(0));
 
   @override
   void initState() {
@@ -31,11 +38,117 @@ class _ClientesState extends State<Clientes> {
     alto = MediaQuery.of(context).size.height;
     return Expanded(
         child: ListView(
+          controller: scrollController,
       children: [
         const AppBarApp(titulo: "Clientes"),
+        if(modoEditar)Container(
+          padding: EdgeInsets.all(ancho > 500 ? 20 : 10),
+          margin: const EdgeInsets.fromLTRB(10, 15, 10, 5),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: const Color.fromRGBO(255, 255, 255, 1),
+              boxShadow: [
+                BoxShadow(
+                    blurRadius: 20,
+                    color: Colors.grey.shade200,
+                    offset: Offset(0, 10))
+              ]),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Editar cliente",style: fuenteSeleccionada1),
+                  BotonIcon(
+                    icono: Icons.close,
+                    onPressed: (){
+                      setState(() {
+                        modoEditar = false;
+                      });
+                    },
+                  )
+                ],
+              ),
+              const SizedBox(height: 20,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  flex: 4,
+                    child: 
+                    TextField(
+                      focusNode: focusNombre,
+                      controller: controllerEditNombre,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(20)
+                        )),
+                        labelText: "Nombre Completo"
+                      ),
+                  )
+                ),
+                SizedBox(width: 10,),
+                Expanded(
+                  flex: 2,
+                    child: TextField(
+                      focusNode: focusFecha,
+                      controller: controllerEditNacimiento,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(20)
+                        )),
+                        labelText: "Fecha de nacimiento"
+                      ),
+                      onTap: () {
+                        showDatePicker(
+                                initialEntryMode:
+                                    DatePickerEntryMode.calendarOnly,
+                                initialDatePickerMode: DatePickerMode.year,
+                                context: context,
+                                initialDate: nacimientoTemp != DateTime(0)
+                                    ? nacimientoTemp
+                                    : DateTime.now(),
+                                firstDate: DateTime(1960),
+                                lastDate: DateTime.now())
+                            .then((value) {
+                          if (value != null) {
+                            clienteEdit.nacimiento = value!;
+                            controllerEditNacimiento.text = fecha(clienteEdit.nacimiento);
+                            FocusScope.of(context).requestFocus();
+                          }
+                        });
+                      },
+                    )),
+                    SizedBox(width: 10,),
+                BotonIconAppBar(
+                    onPressed: () {
+                      if (controllerEditNacimiento.text.isNotEmpty &&
+                          controllerEditNombre.text.isNotEmpty) {
+                        setState(() {
+                          clienteEdit.nombre = controllerEditNombre.text;
+                          clientes[clientes.indexWhere((element) => element == clienteEdit)] = clienteEdit;
+                          clienteEdit = Cliente("", DateTime(0), DateTime(0));
+                          controllerEditNombre.text = "";
+                          controllerEditNacimiento.text = "";
+                          modoEditar = false;
+                        });
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Cliente editado")));
+                      } else {
+                        print("Error, no ingreso un dato");
+                      }
+                    },
+                    icono: Icons.edit_outlined,
+                    ),
+              ],
+            ),
+            ],
+          )
+        ),
         Container(
           padding: EdgeInsets.all(ancho > 500 ? 20 : 10),
-          margin: EdgeInsets.fromLTRB(10, 15, 10, 5),
+          margin: const EdgeInsets.fromLTRB(10, 15, 10, 5),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
               color: const Color.fromRGBO(255, 255, 255, 1),
@@ -81,16 +194,18 @@ class _ClientesState extends State<Clientes> {
                       ),
                       onTap: () {
                         showDatePicker(
-                                initialEntryMode:
-                                    DatePickerEntryMode.calendarOnly,
-                                initialDatePickerMode: DatePickerMode.year,
-                                context: context,
-                                initialDate: nacimientoTemp != DateTime(0)
-                                    ? nacimientoTemp
-                                    : DateTime.now(),
-                                firstDate: DateTime(1960),
-                                lastDate: DateTime.now())
-                            .then((value) {
+                          helpText: "Fecha de nacimiento del cliente",
+                          cancelText: "Cancelar",
+                          initialEntryMode:
+                              DatePickerEntryMode.calendarOnly,
+                          initialDatePickerMode: DatePickerMode.year,
+                          context: context,
+                          initialDate: nacimientoTemp != DateTime(0)
+                              ? nacimientoTemp
+                              : DateTime.now(),
+                          firstDate: DateTime(1960),
+                          lastDate: DateTime.now()
+                        ).then((value) {
                           if (value != null) {
                             nacimientoTemp = value!;
                             controllerNacimiento.text = fecha(nacimientoTemp);
@@ -244,7 +359,6 @@ class _ClientesState extends State<Clientes> {
                         DataCell(BotonIcon(
                           icono: Icons.delete_outline,
                           onPressed: () {
-                            print("mensaje");
                             showDialog(
                               context: context,
                               builder: (context) {
@@ -273,10 +387,12 @@ class _ClientesState extends State<Clientes> {
                                       ),
                                       onPressed: (){
                                         setState(() {
+                                          ventas.removeWhere((element) => element.cliente == cliente);
                                           clientes.removeWhere((element) => element == cliente);
                                           clientestemp.removeWhere((element) => element == cliente);
+                                          print(ventas);
                                         });
-                                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Cliente eliminado")));
+                                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(showCloseIcon: true,content: Text("Cliente eliminado")));
                                         Navigator.pop(context);
                                       },
                                       child: Text("Eliminar")
@@ -297,7 +413,20 @@ class _ClientesState extends State<Clientes> {
                         DataCell(Text(fecha(cliente.fecha))),
                         DataCell(BotonIcon(
                           icono: Icons.edit,
-                          onPressed: () {},
+                          onPressed: () {
+                            setState(() {
+                              modoEditar= true;
+                              controllerEditNombre.text = cliente.nombre;
+                              controllerEditNacimiento.text = fecha(cliente.nacimiento);
+                              clienteEdit = cliente;
+                            });
+                            focusNombre.requestFocus();
+                            scrollController.animateTo(
+                                0,
+                                duration: Duration(milliseconds: 200),
+                                curve: Curves.bounceIn
+                              );
+                          },
                         )),
                         DataCell(BotonIcon(
                           icono: Icons.delete_outline,
@@ -334,7 +463,7 @@ class _ClientesState extends State<Clientes> {
                                           clientes.removeWhere((element) => element == cliente);
                                           clientestemp.removeWhere((element) => element == cliente);
                                         });
-                                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Cliente eliminado")));
+                                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(showCloseIcon: true,content: Text("Cliente eliminado")));
                                         Navigator.pop(context);
                                       },
                                       child: Text("Eliminar")

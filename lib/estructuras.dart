@@ -7,10 +7,10 @@ class Venta{
 }
 
 class Cliente{
-  final String nombre;
-  final DateTime fecha;
-  final DateTime nacimiento;
-  const Cliente(this.nombre, this.fecha, this.nacimiento);
+  late String nombre;
+  late DateTime fecha;
+  late DateTime nacimiento;
+  Cliente(this.nombre, this.fecha, this.nacimiento);
 }
 
 List<Venta> ventas = [

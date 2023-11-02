@@ -1,6 +1,7 @@
 
 
 import 'package:crm_dulces/estructuras.dart';
+import 'package:flutter/material.dart';
 
 int edad(DateTime nacimiento){
   int yearNacimiento = nacimiento.year;
@@ -15,7 +16,9 @@ String fecha(DateTime tiempo){
 List<Cliente> busquedaNombre(String nombre,List<Cliente> listaClientes){
   return listaClientes.where(
     (usuario) {
-      return usuario.nombre.toLowerCase().contains(nombre.toLowerCase());
+      String nombreListaNormalizado =  usuario.nombre.toLowerCase();
+      String nombreBusquedaNormalizado = nombre.toLowerCase();
+      return nombreListaNormalizado.characters.containsAll(nombreBusquedaNormalizado.characters);
     }
   ).toList();
 }
