@@ -23,15 +23,8 @@ class _VentasState extends State<Ventas> {
 
   bool modoEditar = false;
   ScrollController scrollController = ScrollController();
-  TextEditingController controllerNacimiento = TextEditingController();
-  TextEditingController controllerEditNombre = TextEditingController();
-  TextEditingController controllerEditNacimiento = TextEditingController();
-  DateTime nacimientoTemp = DateTime(0);
-  List<Cliente> clientestemp = [];
-  FocusNode focusNombre = FocusNode();
-  FocusNode focusFecha = FocusNode();
-  Cliente clienteEdit = Cliente("",DateTime(0),DateTime(0));
-
+  Venta ventaEditSelect = Venta(clientes[0],0, DateTime(0));
+  TextEditingController controllerEditValor = TextEditingController();
 
   @override
   void initState() {
@@ -67,7 +60,7 @@ class _VentasState extends State<Ventas> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Editar cliente",style: fuenteSeleccionada1),
+                  Text("Editar venta",style: fuenteSeleccionada1),
                   BotonIcon(
                     icono: Icons.close,
                     onPressed: (){
@@ -83,70 +76,51 @@ class _VentasState extends State<Ventas> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
-                  flex: 4,
-                    child: 
-                    TextField(
-                      focusNode: focusNombre,
-                      controller: controllerEditNombre,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(20)
-                        )),
-                        labelText: "Nombre Completo"
-                      ),
-                  )
-                ),
+                  flex: 2,
+                  child: 
+                Container(
+                  padding: EdgeInsets.fromLTRB(10,0,10,0),
+                  height: 58,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: Colors.amber,
+                  ),
+                  child: Center(child: 
+                  Text(ventaEditSelect.cliente.nombre,style: titulo,),)
+                )),
                 SizedBox(width: 10,),
                 Expanded(
                   flex: 2,
                     child: TextField(
-                      focusNode: focusFecha,
-                      controller: controllerEditNacimiento,
+                      keyboardType: TextInputType.number,
+                      controller: controllerEditValor,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(20)
-                        )),
-                        labelText: "Fecha de nacimiento"
-                      ),
+                          borderRadius: BorderRadius.all(Radius.circular(20))
+                        ),
+                          labelText: "Valor"),
                       onTap: () {
-                        showDatePicker(
-                                initialEntryMode:
-                                    DatePickerEntryMode.calendarOnly,
-                                initialDatePickerMode: DatePickerMode.year,
-                                context: context,
-                                initialDate: nacimientoTemp != DateTime(0)
-                                    ? nacimientoTemp
-                                    : DateTime.now(),
-                                firstDate: DateTime(1960),
-                                lastDate: DateTime.now())
-                            .then((value) {
-                          if (value != null) {
-                            clienteEdit.nacimiento = value!;
-                            controllerEditNacimiento.text = fecha(clienteEdit.nacimiento);
-                            FocusScope.of(context).requestFocus();
-                          }
-                        });
                       },
+                  
                     )),
                     SizedBox(width: 10,),
                 BotonIconAppBar(
                     onPressed: () {
-                      if (controllerEditNacimiento.text.isNotEmpty &&
-                          controllerEditNombre.text.isNotEmpty) {
-                        setState(() {
-                          clienteEdit.nombre = controllerEditNombre.text;
-                          clientes[clientes.indexWhere((element) => element == clienteEdit)] = clienteEdit;
-                          clienteEdit = Cliente("", DateTime(0), DateTime(0));
-                          controllerEditNombre.text = "";
-                          controllerEditNacimiento.text = "";
+                        if (controllerEditValor.text.isNotEmpty ) {
+                          setState(() {
+                          ventaEditSelect.valor = parseoInt(controllerEditValor.text);
+                          ventas[ventas.indexWhere((element) => element == ventaEditSelect)] = ventaEditSelect;
+                          ventaEditSelect = Venta(clientes[0], 0, DateTime(0));
+                          controllerEditValor.text = "";
                           modoEditar = false;
-                        });
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Cliente editado")));
-                      } else {
-                        print("Error, no ingreso un dato");
-                      }
-                    },
-                    icono: Icons.edit_outlined,
+                          });
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Venta editada")));
+                      
+                        } else {
+                          print("Error, no ingreso un dato");
+                        }
+                      },
+                    icono: Icons.done_all,
                     ),
               ],
             ),
@@ -175,7 +149,13 @@ class _VentasState extends State<Ventas> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                Expanded(
+                  flex: 2,
+                  child: 
                 DropdownButton(
+                  isExpanded: true,
+                  borderRadius: BorderRadius.circular(20),
+                  padding: EdgeInsets.fromLTRB(10, 17,0,0),
                       value: clienteSelect,
                       items:clientes.map((cliente) {
                         return DropdownMenuItem(
@@ -188,7 +168,7 @@ class _VentasState extends State<Ventas> {
                           clienteSelect = valor!;
                         });
                       }
-                    ),
+                    ),),
                 SizedBox(width: 10,),
                 Expanded(
                   flex: 2,
@@ -196,6 +176,9 @@ class _VentasState extends State<Ventas> {
                       keyboardType: TextInputType.number,
                       controller: controllerValor,
                       decoration: const InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(20))
+                        ),
                           hintText: "Valor"),
                       onTap: () {
                       },
@@ -252,11 +235,10 @@ class _VentasState extends State<Ventas> {
                               border: InputBorder.none),
                           onChanged: (value) {
                             setState(() {
-                              clientestemp = busquedaNombre(
-                                  controllerBuscador.text, clientes);
-                              modoBusqueda = true;
-                              setState(() {});
-                            });
+                                    ventastemp = busquedaNombreVenta(controllerBuscador.text, ventas);
+                                    modoBusqueda = true;
+                                    setState(() {});
+                                  });
                           },
                         ))),
                 const SizedBox(
@@ -322,7 +304,13 @@ class _VentasState extends State<Ventas> {
                             DataCell(Text( fecha(venta.fechaDePago))),
                         DataCell(BotonIcon(
                           icono: Icons.edit,
-                          onPressed: () {},
+                          onPressed: () {
+                            setState(() {
+                              controllerEditValor.text = venta.valor.toString();
+                              ventaEditSelect = venta;
+                              modoEditar = true;
+                            });
+                          },
                         )),
                         DataCell(BotonIcon(
                           icono: Icons.delete_outline,
@@ -357,10 +345,15 @@ class _VentasState extends State<Ventas> {
                                         setState(() {
                                           ventas.removeWhere((element) => element == venta);
                                         });
-                                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(showCloseIcon: true,content: Text("Venta eliminada")));
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(
+                                            showCloseIcon: true,
+                                            content: Text("Venta eliminada")
+                                            )
+                                          );
                                         Navigator.pop(context);
                                       },
-                                      child: Text("Eliminar")
+                                      child: const Text("Eliminar")
                                     ),
                                   ],
                                 );
@@ -379,7 +372,11 @@ class _VentasState extends State<Ventas> {
                         DataCell(BotonIcon(
                           icono: Icons.edit,
                           onPressed: () {
-                            
+                            setState(() {
+                              controllerEditValor.text = venta.valor.toString();
+                              ventaEditSelect = venta;
+                              modoEditar = true;
+                            });
                           },
                         )),
                         DataCell(BotonIcon(

@@ -135,6 +135,7 @@ class _ClientesState extends State<Clientes> {
                           modoEditar = false;
                         });
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Cliente editado")));
+                      
                       } else {
                         print("Error, no ingreso un dato");
                       }
@@ -354,7 +355,20 @@ class _ClientesState extends State<Clientes> {
                         DataCell(Text(fecha(cliente.fecha))),
                         DataCell(BotonIcon(
                           icono: Icons.edit,
-                          onPressed: () {},
+                          onPressed: () {
+                            setState(() {
+                              modoEditar= true;
+                              controllerEditNombre.text = cliente.nombre;
+                              controllerEditNacimiento.text = fecha(cliente.nacimiento);
+                              clienteEdit = cliente;
+                            });
+                            focusNombre.requestFocus();
+                            scrollController.animateTo(
+                                0,
+                                duration: Duration(milliseconds: 200),
+                                curve: Curves.bounceIn
+                              );
+                          },
                         )),
                         DataCell(BotonIcon(
                           icono: Icons.delete_outline,

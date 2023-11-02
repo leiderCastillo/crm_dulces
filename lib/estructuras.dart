@@ -1,9 +1,9 @@
 
 class Venta{
-  final Cliente cliente;
-  final int valor;
-  final DateTime fechaDePago;
-  const Venta(this.cliente,this.valor,this.fechaDePago);
+  late Cliente cliente;
+  late int valor;
+  late DateTime fechaDePago;
+  Venta(this.cliente,this.valor,this.fechaDePago);
 }
 
 class Cliente{
