@@ -78,6 +78,7 @@ class _DashboardState extends State<Dashboard> {
                 alignment: WrapAlignment.center,
                 children: [
                   CardGCirculo(
+                    titulo: "Edades de clientes",
                     porcentajes: obtenerPorcentEdad(),
                     colores: [Colors.red,Colors.blue,Colors.purple,Colors.amber],
                     titulos: ["1-10","11-20","20-40","40-80"],

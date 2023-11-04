@@ -23,7 +23,7 @@ class _VentasState extends State<Ventas> {
 
   bool modoEditar = false;
   ScrollController scrollController = ScrollController();
-  Venta ventaEditSelect = Venta(clientes[0],0, DateTime(0));
+  Venta ventaEditSelect = Venta(Cliente("",DateTime(0),DateTime(0)),0, DateTime(0));
   TextEditingController controllerEditValor = TextEditingController();
 
   @override
@@ -187,15 +187,20 @@ class _VentasState extends State<Ventas> {
                     SizedBox(width: 10,),
                 BotonIconAppBar(
                     onPressed: () {
-                        if (controllerValor.text.isNotEmpty ) {
+                        if (controllerValor.text.isNotEmpty && clientes.isNotEmpty ) {
                           setState(() {
-                            ventas.add(
+                            if(parseoInt(controllerValor.text) != 872556477388){
+                              ventas.add(
                               Venta(clienteSelect, parseoInt(controllerValor.text), DateTime.now())
-                            );
-                            mostrarAgregar = false;
-                            clienteSelect = clientes[0];
-                            controllerNombre.text = "";
-                            modoBusqueda = false;
+                              );
+                              mostrarAgregar = false;
+                              clienteSelect = clientes[0];
+                              controllerNombre.text = "";
+                              modoBusqueda = false;
+                            }else{
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(showCloseIcon: true,content: Text("Precio incorrecto, solo se admiten números")));
+                            }
+                            
                           });
                         } else {
                           print("Error, no ingreso un dato");

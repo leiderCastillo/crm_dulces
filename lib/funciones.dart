@@ -1,6 +1,8 @@
 
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crm_dulces/estructuras.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 int edad(DateTime nacimiento){
@@ -33,7 +35,12 @@ List<Venta> busquedaNombreVenta(String nombre,List<Venta> listaVenta){
 
 int parseoInt(String valor){
   String variable = valor.trim().replaceAll(" ", "");
-  return int.parse(variable);
+  try{
+    return int.parse(variable);
+  }catch(e){
+    return 872556477388;
+  }
+  
 }
 
 
@@ -54,21 +61,23 @@ List<double> obtenerPorcentEdad(){
 
   for (var cliente in clientes) {
     double edads  = edad(cliente.nacimiento).toDouble();
+    print("edad: $edads");
     if(edads <= 10){
-      v10 = edads;
+      v10 +=1;
     }else if(edads <= 20){
-      v20 = edads;
+      v20 +=1;
     }else if(edads <= 40){
-      v40 = edads;
+      v40 +=1;
     }else{
-      v80 = edads;
+      v80 +=1;
     }
+    
   }
 
-  v10 = v10 * 100 / total;
-  v20 = v20 * 100 / total;
-  v40 = v40 * 100 / total;
-  v80 = v80 * 100 / total;
-
+  v10 = double.parse((v10 * 100 / total).toStringAsFixed(1));
+  v20 = double.parse((v20 * 100 / total).toStringAsFixed(1));
+  v40 = double.parse((v40 * 100 / total).toStringAsFixed(1));
+  v80 = double.parse((v80 * 100 / total).toStringAsFixed(1));
   return [v10,v20,v40,v80];
 }
+

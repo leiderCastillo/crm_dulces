@@ -6,14 +6,15 @@ import 'package:flutter/material.dart';
 import 'package:crm_dulces/interfaces/dashboard.dart';
 
 
+
 double ancho = 0;
 double alto = 0;
 int vista = 1;
 
 void main() {
+
   runApp(const MyApp());
 }
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override

@@ -14,9 +14,6 @@ class Cliente{
 }
 
 List<Venta> ventas = [
-  Venta(clientes[0], 2000, DateTime(2023)),
-  Venta(clientes[4], 1000, DateTime(2023)),
-  Venta(clientes[2], 5400, DateTime(2022)),
 ];
 
 List<Cliente> clientes = [
@@ -51,6 +48,5 @@ Cliente("Gonzalo Vázquez", DateTime(2022, 5, 14), DateTime(2004, 6, 14)),
 Cliente("Patricia Ruiz", DateTime(2023, 12, 25), DateTime(1991, 8, 11)),
 Cliente("Mario Gutiérrez", DateTime(2022, 6, 27), DateTime(1999, 4, 6)),
 
-  
 ];
 

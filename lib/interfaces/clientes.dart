@@ -114,7 +114,7 @@ class _ClientesState extends State<Clientes> {
                                 lastDate: DateTime.now())
                             .then((value) {
                           if (value != null) {
-                            clienteEdit.nacimiento = value!;
+                            clienteEdit.nacimiento = value;
                             controllerEditNacimiento.text = fecha(clienteEdit.nacimiento);
                             FocusScope.of(context).requestFocus();
                           }
@@ -208,7 +208,7 @@ class _ClientesState extends State<Clientes> {
                           lastDate: DateTime.now()
                         ).then((value) {
                           if (value != null) {
-                            nacimientoTemp = value!;
+                            nacimientoTemp = value;
                             controllerNacimiento.text = fecha(nacimientoTemp);
                           }
                         });
@@ -474,10 +474,11 @@ class _ClientesState extends State<Clientes> {
                                       ),
                                       onPressed: (){
                                         setState(() {
+                                          ventas.removeWhere((element) => element.cliente == cliente);
                                           clientes.removeWhere((element) => element == cliente);
                                           clientestemp.removeWhere((element) => element == cliente);
                                         });
-                                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(showCloseIcon: true,content: Text("Cliente eliminado")));
+                                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(showCloseIcon: true,content: Text("Cliente eliminado")));
                                         Navigator.pop(context);
                                       },
                                       child: Text("Eliminar")

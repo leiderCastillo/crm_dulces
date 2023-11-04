@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "526768206889",
+    "project_id": "crmdulces",
+    "storage_bucket": "crmdulces.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:526768206889:android:e5545e25b65aac6d9bd838",
+        "android_client_info": {
+          "package_name": "com.example.crm_dulces"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXUkpFirrIIuIVsC-bW_-96XfMfyKX5NE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
