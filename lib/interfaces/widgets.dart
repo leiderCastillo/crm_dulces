@@ -329,9 +329,10 @@ class CardGCirculo extends StatelessWidget {
         ]
       ),
       child:
+    
       PieChart(
         swapAnimationCurve: Curves.easeInOutBack,
-        swapAnimationDuration: Duration(milliseconds: 200),
+        swapAnimationDuration: const Duration(milliseconds: 200),
         PieChartData(
           sectionsSpace: 20,
           sections: titulos.map((e) {
@@ -341,7 +342,7 @@ class CardGCirculo extends StatelessWidget {
               showTitle: true,
               radius: 60,
               color: colores[index],
-              title: "${titulos[index]}",
+              title: titulos[index],
               value: porcentajes[index],
             );
           }
