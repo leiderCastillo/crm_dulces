@@ -1,4 +1,10 @@
 
+class UsuarioVenta{
+  late Cliente cliente;
+  late int compra;
+  UsuarioVenta({required this.cliente,required this.compra});
+}
+
 class Venta{
   late Cliente cliente;
   late int valor;
@@ -14,6 +20,15 @@ class Cliente{
 }
 
 List<Venta> ventas = [
+  Venta(clientes[0], 12, DateTime(2023, 7, 2)),
+  Venta(clientes[2], 12, DateTime(2023, 7, 2)),
+  Venta(clientes[0], 12, DateTime(2023, 7, 2)),
+  Venta(clientes[12], 12, DateTime(2023, 7, 2)),
+  Venta(clientes[2], 12, DateTime(2023, 7, 2)),
+  Venta(clientes[2], 12, DateTime(2023, 7, 2)),
+  Venta(clientes[2], 12, DateTime(2023, 7, 2)),
+  Venta(clientes[1], 12, DateTime(2023, 7, 2)),
+  Venta(clientes[1], 12, DateTime(2023, 7, 2)),
 ];
 
 List<Cliente> clientes = [

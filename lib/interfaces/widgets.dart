@@ -1,4 +1,6 @@
 import 'package:crm_dulces/estilos.dart';
+import 'package:crm_dulces/estructuras.dart';
+import 'package:crm_dulces/funciones.dart';
 import 'package:crm_dulces/interfaces/menu.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -294,7 +296,7 @@ class CardDashBoard extends StatelessWidget {
       padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          color: const Color.fromARGB(255, 245, 245, 245),
+          color: Colors.white,
           boxShadow: const [
             BoxShadow(
                 blurRadius: 10,
@@ -320,6 +322,71 @@ class CardDashBoard extends StatelessWidget {
   }
 }
 
+class CardTopClientes extends StatefulWidget {
+  const CardTopClientes({super.key});
+
+  @override
+  State<CardTopClientes> createState() => _CardTopClientesState();
+}
+
+class _CardTopClientesState extends State<CardTopClientes> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        width: 350,
+        margin: const EdgeInsets.all(10),
+        padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: const Color.fromARGB(255, 255, 255, 255),
+            boxShadow: const [
+              BoxShadow(
+                  blurRadius: 10,
+                  color: Color.fromARGB(76, 158, 158, 158),
+                  offset: Offset(0, 10))
+            ]),
+        child: 
+        Column(
+          
+          children: [
+            Text("Top Clientes",style: fuenteTablaTitulo,),
+            SizedBox(height: 10,),
+        Column(
+          children: topClientes().map((ventacliente) {
+            return 
+            Container(
+              margin: EdgeInsets.fromLTRB(10,5,10,5),
+              padding: EdgeInsets.fromLTRB(5,2,5,2),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.white
+              ),
+              child: 
+                Row(
+                  children: [
+                    CircleAvatar(
+                      backgroundImage: Image.asset("./assets/hombre.png").image,
+                    ),
+                    SizedBox(width: 10,),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(ventacliente.cliente.nombre,style: fuenteTablaTitulo,),
+                        Text("Compras Totales: ${ventacliente.compra.toString()}")
+                      ],
+                    )
+                  ],
+                )
+            );
+          }).toList(),
+        )
+        
+      ],
+        ));
+    }
+  }
+
+
 class CardGCirculo extends StatelessWidget {
   final String titulo;
   final List<double> porcentajes;
@@ -341,7 +408,7 @@ class CardGCirculo extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
-            color: const Color.fromARGB(255, 245, 245, 245),
+            color: Colors.white,
             boxShadow: const [
               BoxShadow(
                   blurRadius: 10,
@@ -364,17 +431,23 @@ class CardGCirculo extends StatelessWidget {
                   swapAnimationCurve: Curves.easeInOutBack,
                   swapAnimationDuration: const Duration(milliseconds: 200),
                   PieChartData(
-                      sections: titulos.map((e) {
-                        int index =
-                            titulos.indexWhere((element) => element == e);
-                        return PieChartSectionData(
-                          titleStyle: TextStyle(fontWeight: FontWeight.bold),
-                          showTitle: true,
-                          color: colores[index],
-                          title: porcentajes[index].toString() + " %",
-                          value: porcentajes[index],
-                        );
-                      }).toList()))),
+                      sections: porcentajes.isNotEmpty ?
+                        titulos.map((e) {
+                          int index =
+                              titulos.indexWhere((element) => element == e);
+                          return PieChartSectionData(
+                            titleStyle: TextStyle(fontWeight: FontWeight.bold),
+                            showTitle: true,
+                            color: colores[index],
+                            title: porcentajes[index].toString() + " %",
+                            value: porcentajes[index],
+                          );
+                        }).toList():
+                          [PieChartSectionData(
+                            title: "0 Clientes",
+                            color: Colors.green
+                          )]
+                      ))),
           const SizedBox(
             width: 10,
           ),

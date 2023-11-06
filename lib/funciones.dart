@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crm_dulces/estructuras.dart';
+import 'package:crm_dulces/interfaces/ventas%20copy.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -78,6 +79,28 @@ List<double> obtenerPorcentEdad(){
   v20 = double.parse((v20 * 100 / total).toStringAsFixed(1));
   v40 = double.parse((v40 * 100 / total).toStringAsFixed(1));
   v80 = double.parse((v80 * 100 / total).toStringAsFixed(1));
-  return [v10,v20,v40,v80];
+  if(v10.isNaN &
+  v20.isNaN &
+  v40.isNaN &
+  v80.isNaN){
+    return [];
+  }else{
+    return [v10,v20,v40,v80];
+  }
+  
 }
 
+
+List<UsuarioVenta> topClientes(){
+  print("saquiiiiasuidauisda");
+  List<Venta> tempVentas = ventas;
+  List<Cliente> tempClientes = clientes;
+  List<UsuarioVenta> top  = [];
+  for (var cliente in tempClientes) {
+    int valores = (tempVentas.where((element) => element.cliente == cliente)).toList().length;
+    top.add(UsuarioVenta(cliente: cliente, compra: valores));
+  }
+  top.sort((a, b) => b.compra.compareTo( a.compra));
+  top.removeWhere((element) => element.compra == 0);
+  return top;
+}

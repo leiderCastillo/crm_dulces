@@ -9,7 +9,7 @@ import 'package:crm_dulces/interfaces/dashboard.dart';
 
 double ancho = 0;
 double alto = 0;
-int vista = 1;
+int vista = 0;
 
 void main() {
 

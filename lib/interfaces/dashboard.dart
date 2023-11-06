@@ -80,9 +80,10 @@ class _DashboardState extends State<Dashboard> {
                   CardGCirculo(
                     titulo: "Edades de clientes",
                     porcentajes: obtenerPorcentEdad(),
-                    colores: [Colors.red,Colors.blue,Colors.purple,Colors.amber],
+                    colores: const [Colors.red,Colors.blue,Colors.purple,Colors.amber],
                     titulos: ["1-10","11-20","20-40","40-80"],
                   ),
+                  CardTopClientes()
                 ],
               )
             )
