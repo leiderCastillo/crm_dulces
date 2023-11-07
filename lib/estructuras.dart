@@ -1,3 +1,8 @@
+class Sugerencia{
+  late Cliente cliente;
+  late String comentario;
+  Sugerencia({required this.cliente, required this.comentario});
+}
 
 class UsuarioVenta{
   late Cliente cliente;
@@ -18,6 +23,10 @@ class Cliente{
   late DateTime nacimiento;
   Cliente(this.nombre, this.fecha, this.nacimiento);
 }
+
+List<Sugerencia> sugerencias = [
+  Sugerencia(cliente: clientes[0], comentario: "LOREM")
+];
 
 List<Venta> ventas = [
   Venta(clientes[0], 12, DateTime(2023, 7, 2)),

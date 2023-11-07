@@ -1,5 +1,6 @@
 import 'package:crm_dulces/estilos.dart';
 import 'package:crm_dulces/interfaces/clientes.dart';
+import 'package:crm_dulces/interfaces/sugerencias.dart';
 import 'package:crm_dulces/interfaces/ventas.dart';
 import 'package:crm_dulces/interfaces/widgets.dart';
 import 'package:flutter/material.dart';
@@ -117,6 +118,16 @@ class _MyHomePageState extends State<MyHomePage> {
                   title: "Ventas",
                   icono: Icons.shopping_bag_outlined,
                 ),
+                BotonMenu(
+                  activo: vista == 3,
+                  onPressed: () {
+                    setState(() {
+                      vista = 3;
+                    });
+                  },
+                  title: "Sugerencias",
+                  icono: Icons.question_answer_outlined,
+                ),
                 const Spacer(flex: 10,),
                 BotonIcono(
                   onPressed: (){print("ia");},
@@ -136,6 +147,7 @@ class _MyHomePageState extends State<MyHomePage> {
         if(vista==0)const Dashboard(),
         if(vista==1)const Clientes(),
         if(vista==2)const Ventas(),
+        if(vista==3)const Sugerencias(),
         ],
       )://VERSION MOBIL
       Column(
@@ -143,6 +155,7 @@ class _MyHomePageState extends State<MyHomePage> {
         if(vista==0)const Dashboard(),
         if(vista==1)const Clientes(),
         if(vista==2)const Ventas(),
+        if(vista==3)const Sugerencias(),
 
         Container(
           color: Colors.amber,
@@ -182,6 +195,16 @@ class _MyHomePageState extends State<MyHomePage> {
                   },
                   title: "Ventas",
                   icono: Icons.shopping_bag_outlined,
+                ),
+                BotonMenuIcono(
+                  activo: vista == 3,
+                  onPressed: () {
+                    setState(() {
+                      vista = 3;
+                    });
+                  },
+                  title: "Sugerencia",
+                  icono: Icons.question_answer_outlined,
                 ),
                 const Spacer(flex: 10,),
                 BotonMenuIcono(

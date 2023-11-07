@@ -34,6 +34,15 @@ List<Venta> busquedaNombreVenta(String nombre,List<Venta> listaVenta){
   ).toList();
 }
 
+List<Sugerencia> busquedaNombreSugerencia(String nombre,List<Sugerencia> listaSugerencia){
+  return listaSugerencia.where(
+    (sugerencia) {
+      return sugerencia.cliente.nombre.toLowerCase().contains(nombre.toLowerCase());
+    }
+  ).toList();
+}
+
+
 int parseoInt(String valor){
   String variable = valor.trim().replaceAll(" ", "");
   try{
