@@ -92,7 +92,6 @@ class _SugerenciasState extends State<Sugerencias> {
                 Expanded(
                   flex: 2,
                     child: TextField(
-                      keyboardType: TextInputType.number,
                       controller: controllerEditValor,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(

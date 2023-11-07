@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <title>Chat CRM</title>
+    <style>
+        body {
+            color: #333;
+            background-color: #efefef;
+            font: 13px helvetica,arial,freesans,clean,sans-serif;
+        }
+        #demo {
+            /*background-color: #ffffff;*/
+            width: 80%;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 20px;
+
+            background-color: #F8F8F8;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 10px #999;
+            line-height: 1.4em;
+            font: 13px helvetica,arial,freesans,clean,sans-serif;
+            color: black;
+        }
+        #demo input {
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            width: 400px;
+        }
+        .button {
+            display: inline-block;
+            background-color: rgb(255, 187, 0);
+            color: #fff;
+            padding: 8px;
+            cursor: pointer;
+            float: right;
+        }
+        #chatBotCommandDescription {
+            display: none;
+            margin-bottom: 20px;    
+        }
+        input:focus {
+            outline: none;
+        }
+        .chatBotChatEntry {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<script src="../js/chatbot.js"></script>
+<link rel="stylesheet" type="text/css" href="../css/chatbot.css" />
+
+<div id="demo">
+    <div id="chatBotCommandDescription"></div>
+    <input id="humanInput" type="text" placeholder="Dime Algo" />
+
+    <div class="button" onclick="if (!ChatBot.playConversation(sampleConversation,4000)) {alert('conversation already running');};">¡Reproduzca una conversación de muestra!</div>
+    <div class="button" onclick="$('#chatBotCommandDescription').slideToggle();" style="margin-right:10px">¿Qué puedo decir?</div>
+
+    <div style="clear: both;">&nbsp;</div>
+
+    <div id="chatBot">
+        <div id="chatBotThinkingIndicator"></div>
+        <div id="chatBotHistory"></div>
+    </div>
+</div>
+
+
+<script>
+    var sampleConversation = [
+        "hola!",
+        "Mi nombre es fry",
+        "¿Qué es el CRM?",
+        "¿Para que sirve el CRM?",
+        "Adios"
+    ];
+    var config = {
+        botName: 'Chat',
+        inputs: '#humanInput',
+        inputCapabilityListing: true,
+        engines: [ChatBot.Engines.duckduckgo()],
+        normalizer: [function( text ) {
+            return text.replace('!' , '');
+        } , 'trim' ],
+        addChatEntryCallback: function(entryDiv, text, origin) {
+            entryDiv.delay(200).slideDown();
+        }
+    };
+    ChatBot.init(config);
+    ChatBot.setBotName("Chat");
+    ChatBot.addPattern("^Hola$", "response", "Hola, ¿en que puedo ayudarte?", undefined, "Di hola para que responda");
+    ChatBot.addPattern("^Adios$", "response", "Adios, Gracias por Prefeirnos", undefined, "Di 'adios' para finalizar");
+    ChatBot.addPattern("(?:mi nombre es|soy|me llamo) (.*)", "response", "hola $1, gracias por estar aqui", function (matches) {
+        ChatBot.setHumanName(matches[1]);
+    },"Di 'Mi nombre es [tu nombre]' o 'soy [nombre]' para que el bot te llame asi");
+    ChatBot.addPattern("¿Qué es el CRM?", "response", "La sigla CRM sigla utilizada para Customer Relationship Management y se refiere al conjunto de prácticas, estrategias comerciales y tecnologías enfocadas en la relación con el cliente. Contando con un sistema de CRM, las empresas de todos los tamaños pueden mantenerse conectadas con los clientes, optimizar los procesos, mejorar la rentabilidad e impulsar el crecimiento del negocio.", undefined, "Pregunta sobre el CRM");
+    ChatBot.addPattern("que es el crm", "response", "La sigla CRM sigla utilizada para Customer Relationship Management y se refiere al conjunto de prácticas, estrategias comerciales y tecnologías enfocadas en la relación con el cliente. Contando con un sistema de CRM, las empresas de todos los tamaños pueden mantenerse conectadas con los clientes, optimizar los procesos, mejorar la rentabilidad e impulsar el crecimiento del negocio.", undefined, "Pregunta sobre el CRM");
+    ChatBot.addPattern("¿Para que sirve el CRM?", "response", "Un CRM (Customer Relationship Management) es una estrategia y un conjunto de herramientas que las empresas utilizan para gestionar relaciones con sus clientes. Sirve para organizar información de clientes, automatizar procesos de ventas, brindar mejor servicio al cliente, realizar marketing dirigido, y tomar decisiones basadas en datos para mejorar la satisfacción del cliente y el éxito del negocio.");
+    ChatBot.addPattern("para que sirve el crm", "response", "Un CRM (Customer Relationship Management) es una estrategia y un conjunto de herramientas que las empresas utilizan para gestionar relaciones con sus clientes. Sirve para organizar información de clientes, automatizar procesos de ventas, brindar mejor servicio al cliente, realizar marketing dirigido, y tomar decisiones basadas en datos para mejorar la satisfacción del cliente y el éxito del negocio.");
+    ChatBot.addPattern("¿Como agrego una venta?", "response", "En la parte sumerior derecha del Programa aparecen diferentes apartados, ve donde dice Ventas, asigna el Código, el Nombre, Producto, la cantidad y la Fecha ya que son espacios requeridos para continuar, luego en Crear y listo, Ya registraste una nueva venta ");
+    ChatBot.addPattern("como agregar una venta", "response", "En la parte sumerior derecha del Programa aparecen diferentes apartados, ve donde dice Ventas, asigna el Código, el Nombre, Producto, la cantidad y la Fecha ya que son espacios requeridos para continuar, luego en Crear y listo, Ya registraste una nueva venta ");
+    ChatBot.addPattern("¿Como agrego un cliente?", "response", "En la parte sumerior derecha del Programa aparecen diferentes apartados, ve donde dice Clientes, rellena los cuadros obligatorios ya que son espacios requeridos para continuar, luego en agregar y listo, Ya registraste un nuevo Cliente ");
+    ChatBot.addPattern("como agegar un cliente", "response", "En la parte sumerior derecha del Programa aparecen diferentes apartados, ve donde dice Clientes, rellena los cuadros obligatorios ya que son espacios requeridos para continuar, luego en agregar y listo, Ya registraste un nuevo Cliente ");
+    ChatBot.addPattern("¿Cuáles son las funcionalidades de seguimiento de ventas?", "response", "Las funcionalidades de seguimiento de ventas en un sistema CRM (Gestión de Relaciones con el Cliente) incluyen la gestión de clientes potenciales y contactos, el seguimiento de oportunidades de venta, programación de actividades y tareas, registro de interacciones, seguimiento de correos electrónicos, generación de informes y análisis de ventas, gestión de productos y servicios, seguimiento de cotizaciones y pedidos, automatización de tareas de ventas y la integración con otras herramientas. Estas características ayudan a las empresas a administrar eficazmente el proceso de ventas y a mantener un registro completo de las interacciones con los clientes.");
+    ChatBot.addPattern("cuales son las funcionalidades de seguimiento de ventas", "response", "Las funcionalidades de seguimiento de ventas en un sistema CRM (Gestión de Relaciones con el Cliente) incluyen la gestión de clientes potenciales y contactos, el seguimiento de oportunidades de venta, programación de actividades y tareas, registro de interacciones, seguimiento de correos electrónicos, generación de informes y análisis de ventas, gestión de productos y servicios, seguimiento de cotizaciones y pedidos, automatización de tareas de ventas y la integración con otras herramientas. Estas características ayudan a las empresas a administrar eficazmente el proceso de ventas y a mantener un registro completo de las interacciones con los clientes.");
+    ChatBot.addPattern("Suma ([0-9]+) mas ([0-9]+)", "response", undefined, function (matches) {
+        ChatBot.addChatEntry("la respuesta es "+(1*matches[1]+1*matches[2])+".","bot");
+    },"di, sumar 1 + 1");
+
+</script>
+</body>
+</html>
