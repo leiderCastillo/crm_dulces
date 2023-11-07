@@ -88,7 +88,7 @@ class _SugerenciasState extends State<Sugerencias> {
                   child: Center(child: 
                   Text(sugerenciaSeleccionada.cliente.nombre,style: titulo,),)
                 )),
-                SizedBox(width: 10,),
+                const SizedBox(width: 10,),
                 Expanded(
                   flex: 2,
                     child: TextField(

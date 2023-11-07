@@ -4,6 +4,7 @@ import 'package:crm_dulces/funciones.dart';
 import 'package:crm_dulces/interfaces/menu.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class BotonIconAppBar extends StatefulWidget {
   final IconData icono;
@@ -147,13 +148,16 @@ class _AdminState extends State<Admin> {
           CircleAvatar(
             minRadius: 20,
             maxRadius: 50,
+            backgroundImage: Image.asset("./assets/hombre.png").image,
           ),
           SizedBox(
             height: 10,
           ),
-          Text("Leider Castillo"),
-          Text("Administrador"),
-          BotonIcono(onPressed: () {}, texto: "Salir", icono: Icons.exit_to_app)
+          Text(usuarioNombre),
+          Text("Invitado"),
+          BotonIcono(onPressed: () {
+            SystemNavigator.pop();
+          }, texto: "Salir", icono: Icons.exit_to_app)
         ],
       ),
     );
@@ -239,7 +243,7 @@ class _BotonMenuIconoState extends State<BotonMenuIcono> {
           curve: Curves.decelerate,
           duration: Duration(milliseconds: 500),
           padding: EdgeInsets.all(5),
-          margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+          margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
           decoration: BoxDecoration(
               color: widget.activo ? Colors.amberAccent : Colors.amber,
               borderRadius: BorderRadius.circular(20)),

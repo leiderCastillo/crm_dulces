@@ -1,3 +1,6 @@
+String usuarioNombre = "Leider";
+String usuarioApellido = "Castillo";
+
 class Sugerencia{
   late Cliente cliente;
   late String comentario;

@@ -1,4 +1,5 @@
 import 'package:crm_dulces/estilos.dart';
+import 'package:crm_dulces/estructuras.dart';
 import 'package:crm_dulces/interfaces/clientes.dart';
 import 'package:crm_dulces/interfaces/sugerencias.dart';
 import 'package:crm_dulces/interfaces/ventas.dart';
@@ -134,11 +135,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   texto: "Chat IA",
                   icono: Icons.view_in_ar_rounded
                 ),
+                /*
                 BotonIcono(
                   onPressed: (){print("Preferencias");},
                   texto: "Settings",
                   icono: Icons.settings
-                ),
+                ),*/
 
                 const Admin()
               ],
@@ -213,12 +215,31 @@ class _MyHomePageState extends State<MyHomePage> {
                   title: "Chat IA",
                   icono: Icons.view_in_ar_rounded
                 ),
+                Container(
+                  padding: EdgeInsets.fromLTRB(3,3,10,3),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: Colors.white
+                  ),
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 15,
+                        backgroundImage: Image.asset("./assets/hombre.png").image,
+                      ),
+                      const SizedBox(width: 4,),
+                      Text(usuarioNombre,style: fuenteTablaTitulo,),
+                    ],
+                  )
+                  
+                )
+                /*
                 BotonMenuIcono(
                   activo: vista == 6,
                   onPressed: (){print("Preferencias");},
                   title: "Settings",
                   icono: Icons.settings
-                ),
+                ),*/
               ],
             )
         ),
